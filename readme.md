@@ -5,9 +5,9 @@ Esse *Readme* tem como objetivo apresentar uma solução arquitetural e de infra
 
 ## Arquitetura
 
-As arquiteturas propostas para essa solução são as de nanoservices e microservices. pois são arquiteturas altamente compatíveis com *cloud*, favorece o reuso, desenvolvimento e  manutenção do sofwtare e permite uma grande escalabilidade, 
+As arquiteturas propostas para essa solução são as de nanoservices e microservices. Pois, são arquiteturas altamente compatíveis com *cloud*, favorece o reuso, desenvolvimento e manutenção do software e permite uma grande escalabilidade.
 
-Nessa solução será apresentada 3 serviços que atendem a necessidade para o problema proposta cada um deles será esplicado de forma individual, porém será dada uma visão geral do funcionamento do mesmos como um todo.
+Nessa solução será apresentada 3 serviços que atendem a necessidade para o (problema) proposta cada um deles será explicado de forma individual, porém, será dada uma visão geral do funcionamento do mesmos como um todo.
 
 ## Tencologias 
 
@@ -16,13 +16,13 @@ Nessa solução será apresentada 3 serviços que atendem a necessidade para o p
 - Typescript
 - Redis
 
-Nodejs por ser uma tecnologia opensource, segura para acesso de dados sensíveis de thread não bloqueante, uma tecnologia capaz de aliar performance e segurança ideal para acesso a dados de forma segura e perfomática,  utilizada junto com o express um poderoso servidor web para a aplicação, e typescript uma linguagem extremamente segura que facilita a manutabilidade do código deixando o software com um autonível de de qualidade. Essa tecnlogia será utilizada nos 3 serviços.
+Nodejs por ser uma tecnologia opensource, segura para acesso de dados sensíveis de thread não bloqueante, uma tecnologia capaz de aliar desempenho e segurança, ideal para acesso a dados de forma segura e performática, utilizada com o express um poderoso servidor (web) para a aplicação, e typescript uma linguagem simples que facilita a manutibilidade do código deixando o software com um auto nível de qualidade. Essas tecnlogias será utilizada nos 3 serviços.
 
 Os serviços b e c utilizarão a tecnologia redis para que sejam mais performáticos sem perder em segurança.
 
-Redis por ser uma tecnologia nosql que armazena a estrutura de dados valor-chave em memória, serve para uso como banco de dados, cache, intermediário de mensagens e fila. O Redis oferece respostas em milissegundos permitindo milhões de solicitações por segundo para aplicativos em tempo real.Com ele podemos por exemplo armazenar consultas de dados mais recentes, com isso, evitamos queries repetidas sejam feitas na base dados, uma excelente vantagem, é uma opção extremamente rápida e performática. 
+Redis por ser uma tecnologia nosql que armazena a estrutura de dados valor-chave em memória, serve para uso como banco de dados, cache, intermediário de mensagens e fila. Ele também oferece respostas em milissegundos permitindo milhões de solicitações por segundo para aplicativos em tempo real. Com ele podemos, por exemplo, armazenar consultas de dados mais recentes, com isso, evitamos queries repetidas sejam feitas na base de dados, uma excelente vantagem, é uma opção extremamente rápida e performática.
 
-O diagrama abaixo explica como implementação do redis seria feita:
+O diagrama abaixo explica como implementação do redis será feita:
 
 ![Diagrama Redis cache](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/redis-diagram.png)
 
@@ -30,15 +30,15 @@ O diagrama abaixo explica como implementação do redis seria feita:
 
 ### O problema 
 
-Esse serviço acessará uma base de terceiros que contém dados extremamente sensíveis porém o acesso a estes não precisam ser altamente perfomaticos e sim seguros.
+Esse serviço acessará uma base de terceiros que contém dados extremamente sensíveis, porém, o acesso a estes não precisam ser altamente performáticos e sim seguros.
 
 ### Solução
 
-A arquitetura utilizada para essa solução será a de microservice, pois ela terá apenas uma única responsabilidade, acessar a base de dados e retornar os dados requisitados.
+A arquitetura utilizada para essa solução será a de microservice, pois, ela terá apenas uma única responsabilidade, acessar a base de dados e retornar os dados requisitados.
 
 A Api Gateway(Maiores explicações serão dadas a baixo) fará todo o processo de segurança e será a porta de entrada para a aplicação protegendo todos os serviços.
 
-A requisição chega a api gateway para o serviço a, por meio de um endereço único a api gateway irá encaminhar a mensagem para o microservice, apenas requisições seguras serão encaminhadas para esse microservice pois a api gateway garantirá tal segurança. Em seguida o microservice acionara sua única responsabilidade requisitar a base de terceiros de acordo com as informações requisitadas, precessar esses dados e retornar para os dados requisitados para a api gateway fará o papel de devolver os dados ao requisitante.
+A requisição chega a api gateway para o serviço a por um endereço único, ela irá encaminhar a mensagem para o microservice, apenas requisições seguras serão encaminhadas para esse microservice, pois, a api gateway garantirá tal segurança. Em seguida o microservice acionara sua única responsabilidade requisitar a base de terceiros de acordo com as informações requisitadas, processar esses dados e retornar os dados requisitados para a api gateway fará o papel de devolve-los ao requisitante.
 
 Diagrama de arquitetura microservice A:
 
