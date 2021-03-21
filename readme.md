@@ -9,7 +9,7 @@ As arquiteturas propostas para essa solução são as de nanoservices e microser
 
 Nessa solução será apresentada 3 softwares que atendem a necessidade para o problema proposta cada um deles será esplicado de forma individual, porém será dada uma visão geral do funcionamento do mesmos como um todo.
 
-## NanoService #1
+## MicroService #1
 
 ### O problema 
 
@@ -17,26 +17,17 @@ Esse serviço acessará uma base de terceiros que contém dados extremamente sen
 
 ### Solução
 
-A arquitetura utilizada para essa solução será a de nanoservice, pois ela terá apenas uma única responsabilidade, acessar a base de dados e retornar os dados requisitados.
+A arquitetura utilizada para essa solução será a de microservice, pois ela terá apenas uma única responsabilidade, acessar a base de dados e retornar os dados requisitados.
 
 As tecnologias adotadas para esse nanoservice serão: 
 - Nodejs
 - Express
 - Typescript
 - PostgresSQL
-- Oauth 2
-- JWT
-- Bcrypt
 
 Nodejs por ser uma tecnologia opensource e segura para acesso de dados sensíveis de thread não bloqueante, utilizada junto com o express um poderoso servidor web para a aplicação, e typescript uma linguagem extremamente segura que facilita a manutabilidade do código deixando o software com um autonível de de qualidade.
 
 PostgresSQL é uma excelente escolha de base de dados para um software que presa por segurança, pois é um banco extremamente robusto e com  bom nível de segurança e integridade.
-
-O Oauth2 será utilizado como o protocolo de autenticação e segurança do serviço que fará toda a estrutura de autorização para a utilização do mesmo, aumentando a segurança do serviço.
-
-JWT será utilizado para autenticação via token para aumentar a segurança do serviço
-
-Bcrypt será utilizado para criptografar as credenciais de acesso do usuário ao serviço como email de login e senha.
 
 ## MicroService #2
 
@@ -52,9 +43,10 @@ As tecnologias adotadas para esse microservice serão:
 - Express
 - Typescript
 - MongoDB
-- Oauth 2
-- JWT
-- Bcrypt
+
+Nodejs por ser uma tecnologia opensource e segura para acesso de dados sensíveis e ao mesmo tempo performática com capacidade de escalar de forma performatica, utilizada junto com o express um poderoso servidor web para a aplicação, e typescript uma linguagem extremamente segura que facilita a manutabilidade do código deixando o software com um autonível de de qualidade.
+
+MongoDB uma tecnologia nosql bastante poderosa capaz de aliar segurança e velocidade no acesso a dados.
 
 ## MicroService #3
 
@@ -63,10 +55,41 @@ Esse serviço acessará uma base de terceiros que contém dados não senssíveis
 
 ### Solução
 
-A arquitetura utilizada para essa solução será a de microservice.
+A arquitetura utilizada para essa solução será a de microservice por facilitar a implementação do serviço, escalabilidade e rápido acesso a dados.
 
 As tecnologias adotadas para esse microservice serão: 
 - Nodejs
 - Express
 - Typescript
 - Redis
+- Elasticsearch
+
+Nodejs por ser uma tecnologia opensource extremanete performatica com uma grande capacidade de escalar, utilizada junto com o express um poderoso servidor web para a aplicação, e typescript uma linguagem extremamente segura que facilita a manutabilidade do código deixando o software com um autonível de de qualidade.
+
+Redis por ser uma tecnologia nosql que armazena a estrutura de dados em memória, podendo ser utilizado para fazer o papel de Message Broker (enfileiramento de mensagens) e caching, 
+com ele podemos por exemplo armazenar consultas de dados mais recentes, com isso, evitamos queries repetidas sejam feitas na de dados, uma excelente vantagem, é uma opção extremamente rápida e performática. 
+
+Elasticsearch é um mecanismo de busca que disponibiliza dados em tempo real, com alto poder de indexação e distribuido, algo que favorece sua agilidade é que ele armazena os dados em forma de documentos e depois disponibiliza esses documentos no formato JSON. Por trabalhar com cluster a tecnologia compartilha dados para prover escalabilidade e alta disponibilidade.
+
+# API Gateway
+
+Amazon Api Gateway é uma ferramenta de gerenciamento de APIs que fica entre o cliente e uma coleção de serviços de back-end.
+Ele funciona como um proxy inverso, que aceita todas as chamadas da interface de programação de aplicações (API), agrega os vários serviços necessários para realizá-las e retorna o resultado apropriado.
+
+Api gateway faz parte do sistema de gerenciamento da API. É uma excelente opção de segurança pois  Ele intercepta todas as solicitações de entrada e as envia por meio desse sistema, que processa diversas funções necessárias.
+
+Dentro do contexto apresentado a Api gateway ajuda na resolução de alguns problemas:
+
+- Proteger  a api da utilização excessiva e de abusos, pois ela utiliza um serviço de autenticação e limitação de taxa. 
+
+- Inclui ferramentas de análises ferramentas de monitoramento e análise o que ajuda a entender como as pessoas utilizam as apis.
+
+- Dentro da arquitetura de microservices uma única solicitação pode exigir chamadas para dezenas de aplicações distintas.
+
+- Como a Api Gateway faz com que seja acessado um endereço único com diversos endpoints, ela encaminha a mensagem para os microservices de forma correta, sendo assim quem está de fora não sabe nem quantos microservices ele está acessando.
+
+- Api gateway traz recusros de autenticação e transformação de mensagens.
+
+A API Gateway será responsável por toda a parte de segurança e autenticação para acesso ao microservices.
+
+Essa solução pode ser visualizada nesse diagrama.
