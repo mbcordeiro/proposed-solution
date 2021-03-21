@@ -5,11 +5,28 @@ Esse *Readme* tem como objetivo apresentar uma solução arquitetural e de infra
 
 ## Arquitetura
 
-As arquiteturas propostas para essa solução são as de nanoservices e microservices. pois são arquiteturas altamente compatíveis com *cloud*, favorece o reuso, desenvolvimento e  manutenção do sofwtare e permite uma grande escalabilidade
+As arquiteturas propostas para essa solução são as de nanoservices e microservices. pois são arquiteturas altamente compatíveis com *cloud*, favorece o reuso, desenvolvimento e  manutenção do sofwtare e permite uma grande escalabilidade, 
 
-Nessa solução será apresentada 3 softwares que atendem a necessidade para o problema proposta cada um deles será esplicado de forma individual, porém será dada uma visão geral do funcionamento do mesmos como um todo.
+Nessa solução será apresentada 3 serviços que atendem a necessidade para o problema proposta cada um deles será esplicado de forma individual, porém será dada uma visão geral do funcionamento do mesmos como um todo.
 
-## MicroService #1
+## Tencologias 
+
+- Nodejs
+- Express
+- Typescript
+- Redis
+
+Nodejs por ser uma tecnologia opensource, segura para acesso de dados sensíveis de thread não bloqueante, uma tecnologia capaz de aliar performance e segurança ideal para acesso a dados de forma segura e perfomática,  utilizada junto com o express um poderoso servidor web para a aplicação, e typescript uma linguagem extremamente segura que facilita a manutabilidade do código deixando o software com um autonível de de qualidade. Essa tecnlogia será utilizada nos 3 serviços.
+
+Os serviços b e c utilizarão a tecnologia redis para que sejam mais performáticos sem perder em segurança.
+
+Redis por ser uma tecnologia nosql que armazena a estrutura de dados valor-chave em memória, serve para uso como banco de dados, cache, intermediário de mensagens e fila. O Redis oferece respostas em milissegundos permitindo milhões de solicitações por segundo para aplicativos em tempo real.Com ele podemos por exemplo armazenar consultas de dados mais recentes, com isso, evitamos queries repetidas sejam feitas na base dados, uma excelente vantagem, é uma opção extremamente rápida e performática. 
+
+O diagrama abaixo explica como implementação do redis seria feita:
+
+![Diagrama Redis cache](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/redis-diagram.png)
+
+## MicroService #A
 
 ### O problema 
 
@@ -19,36 +36,26 @@ Esse serviço acessará uma base de terceiros que contém dados extremamente sen
 
 A arquitetura utilizada para essa solução será a de microservice, pois ela terá apenas uma única responsabilidade, acessar a base de dados e retornar os dados requisitados.
 
-As tecnologias adotadas para esse nanoservice serão: 
-- Nodejs
-- Express
-- Typescript
-- PostgresSQL
+A Api Gateway(Maiores explicações serão dadas a baixo) fará todo o processo de segurança e será a porta de entrada para a aplicação protegendo todos os serviços.
 
-Nodejs por ser uma tecnologia opensource e segura para acesso de dados sensíveis de thread não bloqueante, utilizada junto com o express um poderoso servidor web para a aplicação, e typescript uma linguagem extremamente segura que facilita a manutabilidade do código deixando o software com um autonível de de qualidade.
+A requisição chega a api gateway para o serviço a, por meio de um endereço único a api gateway irá encaminhar a mensagem para o microservice, apenas requisições seguras serão encaminhadas para esse microservice pois a api gateway garantirá tal segurança. Em seguida o microservice acionara sua única responsabilidade requisitar a base de terceiros de acordo com as informações requisitadas, precessar esses dados e retornar para os dados requisitados para a api gateway fará o papel de devolver os dados ao requisitante.
 
-PostgresSQL é uma excelente escolha de base de dados para um software que presa por segurança, pois é um banco extremamente robusto e com  bom nível de segurança e integridade.
+Diagrama de arquitetura microservice A:
 
-## MicroService #2
+## MicroService #B
 
 ### O problema 
 Esse serviço acessará uma base de terceiros que contém dados  sensíveis e o acesso a esses dados precisa ser acessados de forma mais rápida e performática.
 
 ### Solução
 
-A arquitetura utilizada para essa solução será a de microservice.
+Semelhante ao serviço A será utilizado a Api Gateway(Maiores explicações serão dadas a baixo) fará todo o processo de segurança e será a porta de entrada para a aplicação protegendo todos os serviços.
 
-As tecnologias adotadas para esse microservice serão: 
-- Nodejs
-- Express
-- Typescript
-- MongoDB
+A requisição chega a api gateway para o serviço b, por meio de um endereço único a api gateway irá encaminhar a mensagem para o microservice, apenas requisições seguras serão encaminhadas para esse microservice pois a api gateway garantirá tal segurança. Em seguida o microservice acionara sua única responsabilidade requisitar os de acordo com as informações requisitadas, para a melhor performance de processamento e evitando queries repeditas o serviço acionará o redis que funcionará como um Message Broker (enfileiramento de mensagens) e caching intermediário ao acesso ao banco de dados de terceiro aonde acontece a leitura dos dados, o microservice acionará o redis caso a query requisitada for encontrada os dados serão processados, caso não o service acionará a base de terceiros em busca dos dados requisitados e em seguida fará o cache dessas informações para o redis, pois quando esses dados forem acessados novamente eles serão requisitados de forma mais rápida e eficiente. sendo assim o serviço será performático e preciso o tráfego dos dados, em seguida o service vai precessar esses dados e retornar para os dados requisitados para a api gateway fará o papel de devolver os dados ao requisitante.
 
-Nodejs por ser uma tecnologia opensource e segura para acesso de dados sensíveis e ao mesmo tempo performática com capacidade de escalar de forma performatica, utilizada junto com o express um poderoso servidor web para a aplicação, e typescript uma linguagem extremamente segura que facilita a manutabilidade do código deixando o software com um autonível de de qualidade.
+Diagrama de arquitetura microservice B:
 
-MongoDB uma tecnologia nosql bastante poderosa capaz de aliar segurança e velocidade no acesso a dados.
-
-## MicroService #3
+## MicroService #C
 
 ### O problema 
 Esse serviço acessará uma base de terceiros que contém dados não senssíveis e o acesso a esses dados precisa ser acessados de forma bem rápida, performática e escalável.
@@ -57,23 +64,13 @@ Esse serviço acessará uma base de terceiros que contém dados não senssíveis
 
 A arquitetura utilizada para essa solução será a de microservice por facilitar a implementação do serviço, escalabilidade e rápido acesso a dados.
 
-As tecnologias adotadas para esse microservice serão: 
-- Nodejs
-- Express
-- Typescript
-- Redis
-- Elasticsearch
+A Implementação será bastante semelhante ao serviço b, pois apesar de o serviço c não precisar de tanta segurança eles terão implementações similares com respeito a performance.
 
-Nodejs por ser uma tecnologia opensource extremanete performatica com uma grande capacidade de escalar, utilizada junto com o express um poderoso servidor web para a aplicação, e typescript uma linguagem extremamente segura que facilita a manutabilidade do código deixando o software com um autonível de de qualidade.
+A Api Gateway(Maiores explicações serão dadas a baixo) fará todo o processo de segurança e será a porta de entrada para a aplicação protegendo todos os serviços.
 
-Redis por ser uma tecnologia nosql que armazena a estrutura de dados em memória, podendo ser utilizado para fazer o papel de Message Broker (enfileiramento de mensagens) e caching, 
-com ele podemos por exemplo armazenar consultas de dados mais recentes, com isso, evitamos queries repetidas sejam feitas na de dados, uma excelente vantagem, é uma opção extremamente rápida e performática. 
+A requisição chega a api gateway para o serviço b, porém o serviço será público e não será necessário grandes protocolos de segurança. Em seguida por meio de um endereço único a api gateway irá encaminhar a mensagem para o microservice, apenas requisições seguras serão encaminhadas para esse microservice pois a api gateway garantirá tal segurança. Em seguida o microservice acionara sua única responsabilidade requisitar os de acordo com as informações requisitadas, para a melhor performance de processamento e evitando queries repeditas o serviço acionará o redis que funcionará como um Message Broker (enfileiramento de mensagens) e caching intermediário ao acesso ao banco de dados de terceiro aonde acontece a leitura dos dados, o microservice acionará o redis caso a query requisitada for encontrada os dados serão processados, caso não o service acionará a base de terceiros em busca dos dados requisitados e em seguida fará o cache dessas informações para o redis, pois quando esses dados forem acessados novamente eles serão requisitados de forma mais rápida e eficiente. sendo assim o serviço será performático e preciso o tráfego dos dados, em seguida o service vai precessar esses dados e retornar para os dados requisitados para a api gateway fará o papel de devolver os dados ao requisitante.
 
-O diagrama abaixo explica como implementação do redis seria feita:
-
-![Diagrama Redis cache](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/redis-diagram.png)
-
-Elasticsearch é um mecanismo de busca que disponibiliza dados em tempo real, com alto poder de indexação e distribuido, algo que favorece sua agilidade é que ele armazena os dados em forma de documentos e depois disponibiliza esses documentos no formato JSON. Por trabalhar com cluster a tecnologia compartilha dados para prover escalabilidade e alta disponibilidade.
+Diagrama de arquitetura microservice D:
 
 # API Gateway
 
@@ -118,6 +115,7 @@ Diagrama escalabilidade reativa:
 
 ![Diagrama escalabilidade reativa](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/reactive-scalability.png)
 
+# Devops
 Devem estar presentes, também, para melhor distribuir e atender os acessos, tecnologias como LoadBalancer (distribuição de carga), réplicas de leitura do banco de dados
 entre outras.
 
