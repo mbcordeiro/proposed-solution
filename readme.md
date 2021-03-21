@@ -114,6 +114,10 @@ A desvantagem da escalagem reativa é que existe um período de tempo que leva p
 e pouco responsivo. A vantagem é que não é necessário um pré agendamento. Algum aumento inesperado de acessos que acontecer será atendido após o tempo necessário para a
 criação das instâncias extras.
 
+Diagrama escalabilidade reativa:
+
+![Diagrama escalabilidade reativa](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/reactive-scalability.png)
+
 Devem estar presentes, também, para melhor distribuir e atender os acessos, tecnologias como LoadBalancer (distribuição de carga), réplicas de leitura do banco de dados
 entre outras.
 
