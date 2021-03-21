@@ -71,7 +71,7 @@ com ele podemos por exemplo armazenar consultas de dados mais recentes, com isso
 
 O diagrama abaixo explica como implementação do redis seria feita:
 
-![Diagrama Redis cache](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/api-gateway-diagram.png)
+![Diagrama Redis cache](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/redis-diagram.png)
 
 Elasticsearch é um mecanismo de busca que disponibiliza dados em tempo real, com alto poder de indexação e distribuido, algo que favorece sua agilidade é que ele armazena os dados em forma de documentos e depois disponibiliza esses documentos no formato JSON. Por trabalhar com cluster a tecnologia compartilha dados para prover escalabilidade e alta disponibilidade.
 
