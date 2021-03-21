@@ -69,6 +69,8 @@ Nodejs por ser uma tecnologia opensource extremanete performatica com uma grande
 Redis por ser uma tecnologia nosql que armazena a estrutura de dados em memória, podendo ser utilizado para fazer o papel de Message Broker (enfileiramento de mensagens) e caching, 
 com ele podemos por exemplo armazenar consultas de dados mais recentes, com isso, evitamos queries repetidas sejam feitas na de dados, uma excelente vantagem, é uma opção extremamente rápida e performática. 
 
+O diagrama abaixo explica como implementação do redis seria feita:
+
 Elasticsearch é um mecanismo de busca que disponibiliza dados em tempo real, com alto poder de indexação e distribuido, algo que favorece sua agilidade é que ele armazena os dados em forma de documentos e depois disponibiliza esses documentos no formato JSON. Por trabalhar com cluster a tecnologia compartilha dados para prover escalabilidade e alta disponibilidade.
 
 # API Gateway
@@ -93,3 +95,22 @@ Dentro do contexto apresentado a Api gateway ajuda na resolução de alguns prob
 A API Gateway será responsável por toda a parte de segurança e autenticação para acesso ao microservices.
 
 Essa solução pode ser visualizada nesse diagrama.
+
+# Escalabilidade 
+
+Pensando no aumento expressivo do volume de acessos que ocorre no sistema,
+podemos utilizar duas formas de escalamento das instâncias dos servidores:
+- Reativa, na qual é determinado um limite na qual ativará a criação de mais instâncias para que seja possível suprir a demanda.
+- Agendada, que pode ser utilizada quando se sabe que uma grande quantidade
+de acessos irá ocorrer. As instâncias da aplicação podem ser escaladas
+previamente, para poder atender a demanda e após esse período, reduzidas
+para evitar custos desnecessários.
+
+A desvantagem da escalagem reativa é que existe um período de tempo que leva para a criação destas instâncias auxiliares, ou seja, durante esse tempo, o sistema continuará lento
+e pouco responsivo. A vantagem é que não é necessário um pré agendamento. Algum aumento inesperado de acessos que acontecer será atendido após o tempo necessário para a
+criação das instâncias extras.
+
+Devem estar presentes, também, para melhor distribuir e atender os acessos, tecnologias como LoadBalancer (distribuição de carga), réplicas de leitura do banco de dados
+entre outras.
+
+Por fim, por se tratar de uma arquitetura altamente distribuída, utilizando-se de micro e nano serviços, é de extrema importância utilizarmos tecnologias de CI e CD para manter o sistema como um todo testado e simplificar, o máximo possível, o processo de deploy, pois ao contrário de um sistema monolítico, em que temos um único local de deploy, no sistema com arquitetura orientada a micro serviços, podemos ter dezenas, até centenas de instâncias rodando para atender a um único sistema, o que inviabiliza manter um deploy manual.
