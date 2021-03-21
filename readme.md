@@ -42,6 +42,8 @@ A requisição chega a api gateway para o serviço a, por meio de um endereço �
 
 Diagrama de arquitetura microservice A:
 
+![Diagrama arquitetura a](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/microservice-a-diagram.png)
+
 ## MicroService #B
 
 ### O problema 
@@ -54,6 +56,8 @@ Semelhante ao serviço A será utilizado a Api Gateway(Maiores explicações ser
 A requisição chega a api gateway para o serviço b, por meio de um endereço único a api gateway irá encaminhar a mensagem para o microservice, apenas requisições seguras serão encaminhadas para esse microservice pois a api gateway garantirá tal segurança. Em seguida o microservice acionara sua única responsabilidade requisitar os de acordo com as informações requisitadas, para a melhor performance de processamento e evitando queries repeditas o serviço acionará o redis que funcionará como um Message Broker (enfileiramento de mensagens) e caching intermediário ao acesso ao banco de dados de terceiro aonde acontece a leitura dos dados, o microservice acionará o redis caso a query requisitada for encontrada os dados serão processados, caso não o service acionará a base de terceiros em busca dos dados requisitados e em seguida fará o cache dessas informações para o redis, pois quando esses dados forem acessados novamente eles serão requisitados de forma mais rápida e eficiente. sendo assim o serviço será performático e preciso o tráfego dos dados, em seguida o service vai precessar esses dados e retornar para os dados requisitados para a api gateway fará o papel de devolver os dados ao requisitante.
 
 Diagrama de arquitetura microservice B:
+
+![Diagrama arquitetura b](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/microservice-b-diagram.png)
 
 ## MicroService #C
 
@@ -70,7 +74,14 @@ A Api Gateway(Maiores explicações serão dadas a baixo) fará todo o processo 
 
 A requisição chega a api gateway para o serviço b, porém o serviço será público e não será necessário grandes protocolos de segurança. Em seguida por meio de um endereço único a api gateway irá encaminhar a mensagem para o microservice, apenas requisições seguras serão encaminhadas para esse microservice pois a api gateway garantirá tal segurança. Em seguida o microservice acionara sua única responsabilidade requisitar os de acordo com as informações requisitadas, para a melhor performance de processamento e evitando queries repeditas o serviço acionará o redis que funcionará como um Message Broker (enfileiramento de mensagens) e caching intermediário ao acesso ao banco de dados de terceiro aonde acontece a leitura dos dados, o microservice acionará o redis caso a query requisitada for encontrada os dados serão processados, caso não o service acionará a base de terceiros em busca dos dados requisitados e em seguida fará o cache dessas informações para o redis, pois quando esses dados forem acessados novamente eles serão requisitados de forma mais rápida e eficiente. sendo assim o serviço será performático e preciso o tráfego dos dados, em seguida o service vai precessar esses dados e retornar para os dados requisitados para a api gateway fará o papel de devolver os dados ao requisitante.
 
-Diagrama de arquitetura microservice D:
+Diagrama de arquitetura microservice C:
+
+![Diagrama arquitetura c](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/microservice-c-diagram.png)
+
+# Arquitetura Proposta pra solução
+Dessa forma os serviços funcionariam juntos de acordo com o diagrama abaixo: 
+
+![Diagrama arquitetura](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/arquitetura-diagram.png)
 
 # API Gateway
 
