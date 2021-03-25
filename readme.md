@@ -13,10 +13,10 @@ Nessa solução será apresentada 3 serviços que atendem a necessidade para o (
 
 - Nodejs
 - Express
-- Typescript
+- Javascript
 - Redis
 
-Nodejs por ser uma tecnologia opensource, segura para acesso de dados sensíveis de thread não bloqueante, uma tecnologia capaz de aliar desempenho e segurança, ideal para acesso a dados de forma segura e performática, utilizada com o express um poderoso servidor (web) para a aplicação, e typescript uma linguagem simples que facilita a manutibilidade do código deixando o software com um auto nível de qualidade. Essas tecnlogias será utilizada nos 3 serviços.
+Nodejs por ser uma tecnologia opensource, segura para acesso de dados sensíveis de thread não bloqueante, uma tecnologia capaz de aliar desempenho e segurança, ideal para acesso a dados de forma segura e performática, utilizada com o express um poderoso servidor (web) para a aplicação, e javascript uma linguagem simples que facilita a manutibilidade do código deixando o software com um auto nível de qualidade. Essas tecnlogias será utilizada nos 3 serviços.
 
 Os serviços b e c utilizarão a tecnologia redis para que sejam mais performáticos sem perder em segurança.
 
@@ -47,13 +47,20 @@ Diagrama de arquitetura microservice A:
 ## MicroService #B
 
 ### O problema 
-Esse serviço acessará uma base de terceiros que contém dados  sensíveis e o acesso a esses dados precisa ser acessados de forma mais rápida e performática.
+Esse serviço acessará uma base de terceiros que contém dados sensíveis e o acesso a esses dados precisa ser acessados de forma rápida e performática.
 
 ### Solução
 
 Semelhante ao serviço A será utilizado a Api Gateway(Maiores explicações serão dadas a baixo) fará todo o processo de segurança e será a porta de entrada para a aplicação protegendo todos os serviços.
 
-A requisição chega a api gateway para o serviço b, por meio de um endereço único a api gateway irá encaminhar a mensagem para o microservice, apenas requisições seguras serão encaminhadas para esse microservice pois a api gateway garantirá tal segurança. Em seguida o microservice acionara sua única responsabilidade requisitar os de acordo com as informações requisitadas, para a melhor performance de processamento e evitando queries repeditas o serviço acionará o redis que funcionará como um Message Broker (enfileiramento de mensagens) e caching intermediário ao acesso ao banco de dados de terceiro aonde acontece a leitura dos dados, o microservice acionará o redis caso a query requisitada for encontrada os dados serão processados, caso não o service acionará a base de terceiros em busca dos dados requisitados e em seguida fará o cache dessas informações para o redis, pois quando esses dados forem acessados novamente eles serão requisitados de forma mais rápida e eficiente. sendo assim o serviço será performático e preciso o tráfego dos dados, em seguida o service vai precessar esses dados e retornar para os dados requisitados para a api gateway fará o papel de devolver os dados ao requisitante.
+A requisição chega a api gateway para o serviço b, por um endereço único ela irá encaminhar a mensagem para o microservice, apenas requisições seguras serão encaminhadas para esse microservice, pois, a api gateway garantirá tal segurança. Em seguida o microservice acionara sua única responsabilidade requisitar os dados de acordo com as informações requisitadas, para a melhor performance de processamento e evitando queries repetidas o serviço acionará o redis que funcionará como um Message Broker (enfileiramento de mensagens) e caching intermediário ao acesso ao banco de dados de terceiro aonde acontece a leitura dos dados, o microservice acionará o redis caso a query requisitada for encontrada os dados serão processados, entregue para a api gateway e retornada ao requisitante como resposta. Essa solução é performática, pois, evita requisição a base de terceiro utilizando os dados em memória do redis.
+
+Caso contrário se os dados não forem encontrados no redis, o serviço acionará a base de terceiros em busca dos dados requisitados e em seguida fará o cache dessas informações para o redis, pois, quando esses dados forem acessados novamente eles serão requisitados de forma mais rápida e eficiente diretamente no redis. Em seguida os dados serão processados vai precessar esses dados e retornar para os dados requisitados para a api gateway fará o papel de devolver os dados ao requisitante.
+
+Sendo assim o serviço será performático e preciso, o tráfego dos dados terá a fluidez necessária para atender a necessidade.
+
+
+Diagrama de arquitetura microservice B:
 
 Diagrama de arquitetura microservice B:
 
@@ -68,12 +75,15 @@ Esse serviço acessará uma base de terceiros que contém dados não senssíveis
 
 A arquitetura utilizada para essa solução será a de microservice por facilitar a implementação do serviço, escalabilidade e rápido acesso a dados.
 
-A Implementação será bastante semelhante ao serviço b, pois apesar de o serviço c não precisar de tanta segurança eles terão implementações similares com respeito a performance.
+A Implementação será bastante semelhante ao serviço b, pois, apesar de o serviço c não precisar de tanta segurança eles terão implementações similares com respeito a performance.
 
 A Api Gateway(Maiores explicações serão dadas a baixo) fará todo o processo de segurança e será a porta de entrada para a aplicação protegendo todos os serviços.
 
-A requisição chega a api gateway para o serviço b, porém o serviço será público e não será necessário grandes protocolos de segurança. Em seguida por meio de um endereço único a api gateway irá encaminhar a mensagem para o microservice, apenas requisições seguras serão encaminhadas para esse microservice pois a api gateway garantirá tal segurança. Em seguida o microservice acionara sua única responsabilidade requisitar os de acordo com as informações requisitadas, para a melhor performance de processamento e evitando queries repeditas o serviço acionará o redis que funcionará como um Message Broker (enfileiramento de mensagens) e caching intermediário ao acesso ao banco de dados de terceiro aonde acontece a leitura dos dados, o microservice acionará o redis caso a query requisitada for encontrada os dados serão processados, caso não o service acionará a base de terceiros em busca dos dados requisitados e em seguida fará o cache dessas informações para o redis, pois quando esses dados forem acessados novamente eles serão requisitados de forma mais rápida e eficiente. sendo assim o serviço será performático e preciso o tráfego dos dados, em seguida o service vai precessar esses dados e retornar para os dados requisitados para a api gateway fará o papel de devolver os dados ao requisitante.
+A requisição chega a api gateway para o serviço c, porém, o serviço não necessita de um grande grau de segurança., por um endereço único ela irá encaminhar a mensagem para o microservice, apenas requisições seguras serão encaminhadas para esse microservice, pois, a api gateway garantirá tal segurança. Em seguida o microservice acionara sua única responsabilidade requisitar os dados de acordo com as informações requisitadas, para a melhor performance de processamento e evitando queries repetidas o serviço acionará o redis que funcionará como um Message Broker (enfileiramento de mensagens) e caching intermediário ao acesso ao banco de dados de terceiro aonde acontece a leitura dos dados, o microservice acionará o redis caso a query requisitada for encontrada os dados serão processados, entregue para a api gateway e retornada ao requisitante como resposta. Essa solução é performática, pois, evita requisição a base de terceiro utilizando os dados em memória do redis.
 
+Caso contrário se os dados não forem encontrados no redis, o serviço acionará a base de terceiros em busca dos dados requisitados e em seguida fará o cache dessas informações para o redis, pois, quando esses dados forem acessados novamente eles serão requisitados de forma mais rápida e eficiente diretamente no redis. Em seguida os dados serão processados vai precessar esses dados e retornar para os dados requisitados para a api gateway fará o papel de devolver os dados ao requisitante.
+
+Sendo assim o serviço será performático e preciso, o tráfego dos dados terá a fluidez necessária para atender a necessidade.
 Diagrama de arquitetura microservice C:
 
 ![Diagrama arquitetura c](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/microservice-c-diagram.png)
@@ -85,14 +95,15 @@ Dessa forma os serviços funcionariam juntos de acordo com o diagrama abaixo:
 
 # API Gateway
 
-Amazon Api Gateway é uma ferramenta de gerenciamento de APIs que fica entre o cliente e uma coleção de serviços de back-end.
+Para essa solução é proposto utilizar a Api Gateway, Amazon Api Gateway é uma ferramenta de gerenciamento de APIs que fica entre o cliente e uma coleção de serviços de back-end.
+
 Ele funciona como um proxy inverso, que aceita todas as chamadas da interface de programação de aplicações (API), agrega os vários serviços necessários para realizá-las e retorna o resultado apropriado.
 
-Api gateway faz parte do sistema de gerenciamento da API. É uma excelente opção de segurança pois  Ele intercepta todas as solicitações de entrada e as envia por meio desse sistema, que processa diversas funções necessárias.
+Api gateway faz parte do sistema de gerenciamento da API. É uma excelente opção de segurança, pois, ele intercepta todas as solicitações de entrada e as envia por meio desse sistema, que processa diversas funções necessárias.
 
 Dentro do contexto apresentado a Api gateway ajuda na resolução de alguns problemas:
 
-- Proteger  a api da utilização excessiva e de abusos, pois ela utiliza um serviço de autenticação e limitação de taxa. 
+- Proteger a api da utilização excessiva e de abusos, pois, ela utiliza um serviço de autenticação e limitação de taxa.
 
 - Inclui ferramentas de análises ferramentas de monitoramento e análise o que ajuda a entender como as pessoas utilizam as apis.
 
@@ -111,16 +122,16 @@ Essa solução pode ser visualizada nesse diagrama:
 # Escalabilidade 
 
 Pensando no aumento expressivo do volume de acessos que ocorre no sistema,
-podemos utilizar duas formas de escalamento das instâncias dos servidores:
-- Reativa, na qual é determinado um limite na qual ativará a criação de mais instâncias para que seja possível suprir a demanda.
+podemos utilizar duas formas de escalar as instâncias dos servidores:
+
+- Reativa, na qual é determinado um limite na, qual ativará a criação de mais instâncias para que seja possível suprir a demanda.
 - Agendada, que pode ser utilizada quando se sabe que uma grande quantidade
 de acessos irá ocorrer. As instâncias da aplicação podem ser escaladas
 previamente, para poder atender a demanda e após esse período, reduzidas
 para evitar custos desnecessários.
 
-A desvantagem da escalagem reativa é que existe um período de tempo que leva para a criação destas instâncias auxiliares, ou seja, durante esse tempo, o sistema continuará lento
-e pouco responsivo. A vantagem é que não é necessário um pré agendamento. Algum aumento inesperado de acessos que acontecer será atendido após o tempo necessário para a
-criação das instâncias extras.
+A desvantagem do escalonamento reativo é que existe um período de tempo que leva para a criação destas instâncias auxiliares, ou seja, durante esse tempo, o sistema continuará lento
+e pouco responsivo. A vantagem é que não é necessário um pré agendamento. Algum aumento inesperado de acessos que acontecer será atendido após o tempo necessário para a criação das (instâncias) extras.
 
 Diagrama escalabilidade reativa:
 
@@ -130,4 +141,13 @@ Diagrama escalabilidade reativa:
 Devem estar presentes, também, para melhor distribuir e atender os acessos, tecnologias como LoadBalancer (distribuição de carga), réplicas de leitura do banco de dados
 entre outras.
 
-Por fim, por se tratar de uma arquitetura altamente distribuída, utilizando-se de micro e nano serviços, é de extrema importância utilizarmos tecnologias de CI e CD para manter o sistema como um todo testado e simplificar, o máximo possível, o processo de deploy, pois ao contrário de um sistema monolítico, em que temos um único local de deploy, no sistema com arquitetura orientada a micro serviços, podemos ter dezenas, até centenas de instâncias rodando para atender a um único sistema, o que inviabiliza manter um deploy manual.
+Por fim, por se tratar de uma arquitetura altamente distribuída, utilizando-se de micro e nano serviços, é de extrema importância utilizarmos tecnologias de CI e CD para manter o sistema como um todo testado e simplificar, o máximo possível, o processo de deploy, pois, ao contrário de um sistema monolítico, em que temos um único local de deploy, no sistema com arquitetura orientada a micro serviços, podemos ter dezenas, até centenas de instâncias rodando para atender a um único sistema, o que inviabiliza manter um deploy manual.
+
+# Utilização no mundo real
+
+Essa solução agregaria valor a pessoas que desejam saber como é o seu histórico compras e transações financeiras em determinados períodos.
+Pode ser utilizada para construir uma aplicação que tenha como objetivo ajudar pessoas a entender como elas gastam, e projetar futuras compras desde formas de pagar até mesmo como pagar e em quanto tempo.
+
+Poderia servir também como consulta de linha de crédito em bancos e outras instituições financeiras para como seu comportamento como consumidor é entendido por tais instituições e como as pessoas poderiam ter acesso a determinadas linhas decrédito e empréstimos de acordo com seu perfil.
+
+Outra possibilidade seria ser utilizadas por instituições financeiras para entender melhor o perfil de consumidores e utilizar esses dados para oferecer linhas de créditos ou empréstimos de acordo com perfil da pessoa.
