@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+  api:
+    build: .
+    container_name: fast-service-radis
+    ports:
+      - "3000:3000"
+    restart: on-failure
+    environment:
+      - SPOTIFY_TOKEN=${SPOTIFY_TOKEN}
+      - REDIS_HOST=redis-cache
+    networks:
+      - fast-service-radis-network
+    depends_on:
+      - redis-cache
+    links:
+     - redis:redis
+  redis-cache:
+    image: redis
+    container_name: redis
+    restart: on-failure
+    volumes:
+      - redis-data:/data
+    networks:
+      - fast-service-radis-network
+volumes:
+  redis-data:
+networks:
+  cache-spotify-network:
