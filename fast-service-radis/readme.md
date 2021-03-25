@@ -17,6 +17,6 @@ ou
 
 Exemplo de request a ser feito para o serviço:
 
-![Request](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/request-example.png)
+![Request](https://github.com/mbcordeiro/proposed-solution/blob/master/fast-service-radis/request-example.png)
 
 
