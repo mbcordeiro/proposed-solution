@@ -8,7 +8,7 @@
 
 Rode as seguintes imagens:
 
-![Imagens Docker](https://github.com/mbcordeiro/proposed-solution/blob/master/diagrams/image-docker.png)
+![Imagens Docker](https://github.com/mbcordeiro/proposed-solution/blob/master/fast-service-radis/image-docker.png)
 
 Para iniciar o servidor:
 ```yarn start```
