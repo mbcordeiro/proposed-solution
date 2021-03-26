@@ -151,3 +151,13 @@ Pode ser utilizada para construir uma aplicação que tenha como objetivo ajudar
 Poderia servir também como consulta de linha de crédito em bancos e outras instituições financeiras para como seu comportamento como consumidor é entendido por tais instituições e como as pessoas poderiam ter acesso a determinadas linhas decrédito e empréstimos de acordo com seu perfil.
 
 Outra possibilidade seria ser utilizadas por instituições financeiras para entender melhor o perfil de consumidores e utilizar esses dados para oferecer linhas de créditos ou empréstimos de acordo com perfil da pessoa.
+
+# Observações 
+
+Como n foi possível implementar parte da solução tenho alguns outros repositórios que podem servir de referencia ao uso de Api gateways dentro da arquitetura de microservices(acesso abaixo via link), bem como a implementação de jwt, serviços que agregam extrema segurança a api.
+
+https://github.com/mbcordeiro/login-auth-jwt-node-mongo
+https://github.com/mbcordeiro/microservices-spring-boot
+https://github.com/mbcordeiro/sales-api-spring-boot-jwt
+https://github.com/mbcordeiro/spring-boot-ionic-backend
+
