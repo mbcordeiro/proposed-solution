@@ -10,20 +10,20 @@ Esse modelo representa o microservice B e C seriam implementados esses serviços
 
 Rode as seguintes imagens:
 
-![Imagens Docker](https://github.com/mbcordeiro/proposed-solution/blob/master/fast-service-radis/image-docker.png)
+![Imagens Docker](https://github.com/mbcordeiro/proposed-solution/blob/master/fast-service-radis/img/image-docker.png)
 
 Para iniciar o servidor:
 
 Gere a imagem docker : ```docker build -t fast-service-redis .```
 
-Em seguida rode 
+Em seguida rode:
 ```yarn start```
 ou
 ```npm start ```
 
 Exemplo de request a ser feito para o serviço:
 
-![Request](https://github.com/mbcordeiro/proposed-solution/blob/master/fast-service-radis/request-example.png)
+![Request](https://github.com/mbcordeiro/proposed-solution/blob/master/fast-service-radis/img/request-example.png)
 
 
 *Não foi possível a implemtação da Api Gateway e comunicação como serviço
