@@ -12,16 +12,19 @@ O modelo representa como seria a implementação de um microservice para obter o
 
 Rode as seguintes imagens:
 
-![Imagens Docker]()
+![Imagens Docker](https://github.com/mbcordeiro/proposed-solution/blob/master/direct-service-api/img/image-docker2.png)
 
 Para iniciar o servidor:
+Gere a imagem docker : ```docker build -t direct-service-api .```
+
+Em seguida rode:
 ```yarn start```
 ou
 ```npm start ```
 
 Exemplo de request a ser feito para o serviço:
 
-![Request]()
+![Request](https://github.com/mbcordeiro/proposed-solution/blob/master/direct-service-api/img/example-request-2.png)
 
 
 *Não foi possível a implemtação da Api Gateway e comunicação como serviço
