@@ -154,7 +154,7 @@ Outra possibilidade seria ser utilizadas por instituições financeiras para ent
 
 # Observações 
 
-Como n foi possível implementar parte da solução tenho alguns outros repositórios que podem servir de referencia ao uso de Api gateways dentro da arquitetura de microservices(acesso abaixo via link), bem como a implementação de jwt, serviços que agregam extrema segurança a api.
+Algumas das soluções apresentadas foram tiradas de outros projetos e repositorios implementados por mim que podem servir de referencia ao uso de Api gateways dentro da arquitetura de microservices(acesso abaixo via link), bem como a implementação de jwt, serviços que agregam extrema segurança a api.
 
 - https://github.com/mbcordeiro/login-auth-jwt-node-mongo
 - https://github.com/mbcordeiro/microservices-spring-boot
